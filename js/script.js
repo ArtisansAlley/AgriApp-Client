@@ -3,14 +3,19 @@ var height =  $(window).height();
 
 
 function set_up_cam() {
-    Webcam.set('constraints',{
-        video: true,
-        facingMode: "environment"
-        });
-        Webcam.set({
-        image_format: 'jpeg',
-        jpeg_quality: 90
+    Webcam.set('constraints', {
+            video: true,
+            facingMode: "environment"
     });
+    
+    Webcam.set({
+        image_format: 'jpeg',
+        jpeg_quality: 100,
+        flip_horiz: true,
+        dest_width: 1024,
+        dest_height: 768
+    });
+
     Webcam.attach('#camera');
 }
 
@@ -27,18 +32,15 @@ function take_snapshot() {
         data = {'img': data_uri};
         data = JSON.stringify(data);
         $.ajax({
-        url: 'http://manifestocrafters.mine.bz/upload',
-        method: 'POST',
-        contentType: "application/json",
-        dataType: "json",
-        data: data,
-        complete:function(res) {
-        alert(res.responseJSON.message);
-        }
+            url: 'http://manifestocrafters.mine.bz/upload',
+            method: 'POST',
+            contentType: "application/json",
+            dataType: "json",
+            data: data,
+            complete:function(res) {
+                alert(res.responseJSON.message);
+            }
         })
-        // Webcam.upload( data_uri, , function(code, text) {
-        //   console.log(text);
-        // });
     });
 }
 
