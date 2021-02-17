@@ -10,10 +10,7 @@ function set_up_cam() {
     
     Webcam.set({
         image_format: 'jpeg',
-        jpeg_quality: 100,
-        flip_horiz: true,
-        dest_width: 1024,
-        dest_height: 768
+        jpeg_quality: 100
     });
 
     Webcam.attach('#camera');
@@ -32,7 +29,7 @@ function take_snapshot() {
         data = {'img': data_uri};
         data = JSON.stringify(data);
         $.ajax({
-            url: 'http://manifestocrafters.mine.bz/upload',
+            url: 'https://manifestocrafters.mine.bz/upload',
             method: 'POST',
             contentType: "application/json",
             dataType: "json",
