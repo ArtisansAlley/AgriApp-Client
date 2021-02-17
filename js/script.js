@@ -29,7 +29,7 @@ function take_snapshot() {
         data = {'img': data_uri};
         data = JSON.stringify(data);
         $.ajax({
-            url: 'https://manifestocrafters.mine.bz/upload',
+            url: 'http://manifestocrafters.mine.bz/upload',
             method: 'POST',
             contentType: "application/json",
             dataType: "json",
