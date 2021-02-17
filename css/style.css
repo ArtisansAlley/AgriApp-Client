@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
+
+body {
+    font-family: Roboto, Arial, Helvetica, sans-serif !important;
+    color: #606060 !important;
+}
+
+#welcome {
+    background-color: white;
+    background-image: url('../img/bg.png');
+    background-size: cover;
+    background-position-y: -100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 3;
+}
+.tap-to-continue {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #05ac72;
+}
+
+#logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#capture {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    background-color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 300%;
+}
+video {
+    object-fit: cover;
+}
+#camera {
+    width: 100%;
+    height: 100vh;
+}

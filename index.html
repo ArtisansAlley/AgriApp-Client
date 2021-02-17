@@ -1,0 +1,32 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<!-- Welcome Page -->
+	<div id="welcome">
+		<img id="logo" src="img/logo.png" alt="" width="140">
+		<div class="tap-to-continue">
+
+		</div>
+	</div>
+
+	<!-- Camera -->
+	<div class="mx-auto" id="camera"></div>
+	
+	<!-- Capture Button -->
+	<button class="btn btn-lg my-3" type=button value="Predict" id="capture" onClick="take_snapshot()" style="display: none;">
+		<img class="img-fluid" src="img/camera.png" alt="" width="30">
+	</button>
+
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous">
+	</script>
+	<script type="text/javascript" src="js/webcam.js"></script>
+	<script src="js/script.js"></script>
+</body>
+</html>
