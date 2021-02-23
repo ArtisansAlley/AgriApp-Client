@@ -3,6 +3,7 @@ var height =  $(window).height();
 
 
 function set_up_cam() {
+    
     Webcam.set('constraints', {
             video: true,
             facingMode: "environment"
@@ -36,11 +37,22 @@ function take_snapshot() {
             data: data,
             complete:function(res) {
                 alert(res.responseJSON.message);
+            },
+            error:function(res){
+                alert(JSON.stringify(res));
             }
         })
     });
 }
-
-$(document).ready(function() {
-    set_up_cam();
-})
+document.addEventListener('deviceready', () => {
+    var permissions = cordova.plugins.permissions;
+    permissions.requestPermission(permissions.CAMERA, success, error);
+    function error() {
+        alert('Camera permission is not turned on');
+      }
+       
+      function success( status ) {
+        set_up_cam();
+        if( !status.hasPermission ) error();
+      }
+});
