@@ -1,27 +1,51 @@
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="css/style.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 	<!-- Welcome Page -->
 	<div id="welcome">
-		<img id="logo" src="img/logo.png" alt="" width="140">
-		<div class="tap-to-continue">
-
+		<div class="wrapper">
+			<img id="logo" src="img/logo.png" alt="" width="140">
+			<div class="loader">Loading...</div>
 		</div>
+		
 	</div>
 
 	<!-- Camera -->
 	<div class="mx-auto" id="camera"></div>
 	
 	<!-- Capture Button -->
-	<button class="btn btn-lg my-3" type=button value="Predict" id="capture" onClick="take_snapshot()" style="display: none;">
-		<img class="img-fluid" src="img/camera.png" alt="" width="30">
-	</button>
-  <script type="text/javascript" src="cordova.js"></script>
-  <script src="js/jquery.js"></script>
+	<div class="capture-wrapper">
+		<button class="btn btn-lg my-3" type=button value="Predict" id="capture" onClick="take_snapshot()" style="display: none;">
+			<img class="img-fluid" src="img/camera.png" alt="" width="25">
+		</button>
+	</div>
+
+	<div id="result" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Top Three Result</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous">
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="js/webcam.js"></script>
 	<script src="js/script.js"></script>
 </body>
