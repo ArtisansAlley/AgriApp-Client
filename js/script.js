@@ -1,6 +1,33 @@
 var width = $(window).width();
 var height =  $(window).height();
 
+var veggies = {
+    'cabbage': {
+        'img': 'img/veggies/cabbage.jpeg',
+        'scientific_name': 'Brassica oleracea var. capitata'
+    },
+    'lettuce': {
+        'img': 'img/veggies/lettuce.jpeg',
+        'scientific_name': 'Lactuca sativa'
+    },
+    'pechay': {
+        'img': 'img/veggies/petchay.jpeg',
+        'scientific_name': 'Brassica rapa'
+    },
+    'malunggay': {
+        'img': 'img/veggies/lettuce.jpeg',
+        'scientific_name': 'Moringa oleifer'
+    },
+    'parsley': {
+        'img': 'img/veggies/parlsey.jpeg',
+        'scientific_name': 'Petroselinum crispum'
+    },
+    'spinach': {
+        'img': 'img/veggies/spinach.jpeg',
+        'scientific_name': 'Spinacia oleracea'
+    }
+}
+
 
 function set_up_cam() {
     Webcam.set('constraints', {
@@ -20,7 +47,10 @@ Webcam.on( 'live', function() {
 
 // /http://manifestocrafters.mine.bz/upload
 function take_snapshot() {
-    Webcam.freeze()
+    $check = $('.fa-check');
+    $spin = $('.fa-spin');
+
+
     Webcam.snap( function(data_uri) {
         data = {'img': data_uri};
         data = JSON.stringify(data);
@@ -30,6 +60,10 @@ function take_snapshot() {
             contentType: "application/json",
             dataType: "json",
             data: data,
+            beforeSend: function() {
+                $check.hide();
+                $spin.show();
+            },
             error: function(res) {
                 alert(JSON.stringify(res));
             },
@@ -38,24 +72,32 @@ function take_snapshot() {
                 html = '';
 
                 for (i = 0; i < topThree.length; i++) {
+                    veg = topThree[i];
                     html +=  `
-                    <div class="row">
-                        <div class="col-4">	
-                            <img class="img-fluid" src="img/veggies/${topThree[i]}.png" alt="">
+                    <div class="card mb-2">
+                        <img class="card-img-top" src="${veggies[veg].img}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="font-weight-bold">${veg.charAt(0).toUpperCase() + veg.slice(1)}</h5>
+                            <p><em>${veggies[topThree[i]].scientific_name}</em></p>
                         </div>
-                        <div class="col-8">
-                            <p class="h5">${i + 1}. ${topThree[i]}</p>
-                        </div>
-                    </div>
+                    </div>     
                     `;
                 }
 
                 $('#result .modal-body').html(html);
-                $('#result').modal('show');
+                $('#result').fadeIn();
+            },
+            complete: function() {
+                $check.show();
+                $spin.hide();
             }
         })
     });
 }   
+
+$('#result .close').click(function() {
+    $('#result').fadeOut()
+})
 
 $(document).ready(function() {
     set_up_cam();

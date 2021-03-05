@@ -2,16 +2,17 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/fontawesome.min.css">
+	<link rel="stylesheet" href="css/solid.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="bg-dark">
 	<!-- Welcome Page -->
 	<div id="welcome">
 		<div class="wrapper">
 			<img id="logo" src="img/logo.png" alt="" width="140">
 			<div class="loader">Loading...</div>
 		</div>
-		
 	</div>
 
 	<!-- Camera -->
@@ -19,18 +20,28 @@
 	
 	<!-- Capture Button -->
 	<div class="capture-wrapper">
-		<button class="btn btn-lg my-3" type=button value="Predict" id="capture" onClick="take_snapshot()" style="display: none;">
-			<img class="img-fluid" src="img/camera.png" alt="" width="25">
+		<button class="btn btn-lg my-3 gradient" type=button value="Predict" id="capture" onClick="take_snapshot()" style="display: none;">
+			<i class="fas fa-check text-light"></i>
+			<i class="fas fa-spin fa-spinner text-light" style="display: none;"></i>
 		</button>
+	</div>
+
+	<!-- Loading -->
+	<div id="loading" style="display: none;">
+		<div class="overlay"></div>
+		<div class="loader-container">
+			<div class="loader">Loading...</div>
+			<p class="text-white mt-5 text-uppercase font-weight-bold">Detecting Image</p>
+		</div>
 	</div>
 
 	<div id="result" class="modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Top Three Result</h5>
+				<div class="modal-header gradient rounded-0 border-0">
+					<h5 class="modal-title text-light font-weight-bold">Top Three Result</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
+						<i class="fas fa-arrow-left text-light"></i>
 					</button>
 				</div>
 				<div class="modal-body">
