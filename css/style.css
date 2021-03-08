@@ -10,7 +10,7 @@ body {
 }
 
 #welcome {
-  background: #56ab2f;  /* fallback for old browsers */ 
+  background: #1ca953;  /* fallback for old browsers */ 
 }
 
 button {
@@ -20,8 +20,8 @@ button {
 
 .bg-primary,
 .btn-primary {
-  background-color: #56ab2f !important;
-  border-color: #56ab2f !important;
+  background-color:#1ca953!important;
+  border-color:#1ca953 !important;
 }
 
 .ripple {
@@ -29,10 +29,10 @@ button {
   transition: background 0.8s;
 }
 .ripple:hover {
-  background: #6ad13b radial-gradient(circle, transparent 1%, #6ad13b 1%) center/15000%;
+  background: #24c362 radial-gradient(circle, transparent 1%, #24c362 1%) center/15000%;
 }
 .ripple:active {
-  background-color: #6ad13b;
+  background-color: #24c362;
   background-size: 100%;
   transition: background 0s;
 }
@@ -119,12 +119,46 @@ video {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: white;
+  background-color:#ffffff;
   margin: auto;
+  overflow: auto;
 }
 
 #result > #preview {
-  width: 500px;
+  width: 100%;
+  padding-top: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+#result .card {
+  background-color: #e8f6ee;
+  border: none !important;
+}
+
+#result .top {
+  background-color: #1ca953;
+  color: white;
+  width: fit-content;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#back, #result h1,#result h2,#result h3,#result h4,#result h5,#result h6 {
+  color: #00600f;
+}
+
+#result p {
+  color: #80af87 !important;
+}
+
+#result .veggie-image {
+  width: 100%;
+  padding-top: 100%;
+  background-image: url('../img/veggies/cabbage.png');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* Loading css */

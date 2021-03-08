@@ -97,17 +97,22 @@ function take_snapshot() {
                 for (i = 0; i < topThree.length; i++) {
                     veg = topThree[i];
                     html +=  `
-                    <div class="card mb-2">
-                        <img class="card-img-top" src="${veggies[veg].img}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="font-weight-bold">${veg.charAt(0).toUpperCase() + veg.slice(1)}</h5>
-                            <p><em>${veggies[topThree[i]].scientific_name}</em></p>
+                    <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="top p-3">
+                            <h5 class="font-weight-bold text-light mb-0">${i}</h5>
                         </div>
-                    </div>     
+                        <div class="veggie-image"></div>
+                        <h5 class="font-weight-bold">${topThree[i]}</h5>
+                        <p><em>Brassica oleracea var. capitata</em></p>
+                    </div>
+                </div>	
                     `;
                 }
 
+                $('#content').html(html);
                 $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#result #preview').css({backgroundImage:'url(' + data_uri + ')'});
                 $('#result').fadeIn(0);
             },
             complete: function() {
@@ -118,8 +123,8 @@ function take_snapshot() {
     });
 }   
 
-$('#result .close').click(function() {
-    $('#result').fadeOut()
+$('#result #back').click(function() {
+    $('#result').fadeOut(0)
 })
 
 $(document).ready(function() {
