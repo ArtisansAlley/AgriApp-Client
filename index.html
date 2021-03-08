@@ -12,18 +12,34 @@
 		<div class="wrapper">
 			<img id="logo" src="img/logo.png" alt="" width="140">
 			<div class="loader">Loading...</div>
+			<p class="text-light text-center">
+			</p>
 		</div>
 	</div>
 
+	<!-- Note -->
+	<div class="alert alert-dark d-none">
+		<p class="text-light mb-0">
+			<i class="fas fa-image"></i> Take a picture of the vegetable
+		</p>
+	</div>
+	
 	<!-- Camera -->
-	<div class="mx-auto" id="camera"></div>
+	<div class="center-v">
+		<div class="mx-auto" id="camera"></div>
+	</div>
 	
 	<!-- Capture Button -->
-	<div class="capture-wrapper">
-		<button class="btn btn-lg my-3 gradient" type=button value="Predict" id="capture" onClick="take_snapshot()" style="display: none;">
-			<i class="fas fa-check text-light"></i>
-			<i class="fas fa-spin fa-spinner text-light" style="display: none;"></i>
-		</button>
+	<button class="btn btn-lg my-3 btn-primary ripple" type=button value="Predict" id="capture" onClick="take_snapshot()" style="display: none;">
+		<i class="fas fa-camera text-light"></i>
+		<i class="fas fa-spin fa-spinner text-light" style="display: none;"></i>
+	</button>
+
+	<!-- Result -->
+	<div id="result" style="display: none;">
+		<div id="preview">
+
+		</div>
 	</div>
 
 	<!-- Loading -->
@@ -35,21 +51,7 @@
 		</div>
 	</div>
 
-	<div id="result" class="modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header gradient rounded-0 border-0">
-					<h5 class="modal-title text-light font-weight-bold">Top Three Result</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<i class="fas fa-arrow-left text-light"></i>
-					</button>
-				</div>
-				<div class="modal-body">
-					
-				</div>
-			</div>
-		</div>
-	</div>
+
 
 	<script
 	src="https://code.jquery.com/jquery-3.5.1.js"

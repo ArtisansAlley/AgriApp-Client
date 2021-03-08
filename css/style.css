@@ -5,12 +5,42 @@ body {
     color: #606060 !important;
 }
 
-#welcome,
-.gradient {
-  background-color: #3bb78f;
-  background-image: linear-gradient(315deg, #3bb78f 0%, #0bab64 74%);
+.bg-dark {
+  background-color: #222222 !important;
 }
 
+#welcome {
+  background: #56ab2f;  /* fallback for old browsers */ 
+}
+
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-primary,
+.btn-primary {
+  background-color: #56ab2f !important;
+  border-color: #56ab2f !important;
+}
+
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #6ad13b radial-gradient(circle, transparent 1%, #6ad13b 1%) center/15000%;
+}
+.ripple:active {
+  background-color: #6ad13b;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+
+.btn-primary.focus, .btn-primary:focus {
+  box-shadow: none !important;
+}
 /* Welcome */
 #welcome {
     background-size: cover;
@@ -31,22 +61,16 @@ body {
 }
 
 /* Capture Button */
-.capture-wrapper {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0,0,0,0.7);
-}
+
 #capture {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    background-color: white;
-    width: 70px;
-    height: 70px;
-    border-radius: 300%;
-    margin: auto;
+  background-color: white;
+  width: 80px;
+  height: 80px;
+  border-radius: 300%;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
 }
 #capture:active {
   background-color: #3bb78f;
@@ -54,11 +78,13 @@ body {
 
 /* Video */
 video {
-    object-fit: cover;
+  object-fit: cover;
 }
-#camera {
-    width: 100%;
-    padding-top: 56.25%;
+.center-v {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Loading */
@@ -87,16 +113,18 @@ video {
 }
 
 /* Result */
-.modal-dialog {
-  margin: 0;
-}
-.modal-content {
-  height: 100vh;
-  border-radius: 0;
+#result {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  margin: auto;
 }
 
-.modal-content .modal-body {
-  overflow: scroll;
+#result > #preview {
+  width: 500px;
 }
 
 /* Loading css */

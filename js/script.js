@@ -28,15 +28,38 @@ var veggies = {
     }
 }
 
+function compute_aspect_ratio() {
+    original_width = 1080;
+    original_height = 1080;
+    new_width = window.innerWidth;
+    new_height = original_height / original_width * new_width;
+
+    return {
+        w:new_width,
+        h:new_height
+    };
+}
 
 function set_up_cam() {
+    res = compute_aspect_ratio();
+    console.log(res);
+
     Webcam.set('constraints', {
             video: true,
             facingMode: "environment"
     });
+    Webcam.set({
+        width: res.w,
+        height: res.h,
+        dest_width: 1080,
+        dest_height: 1080,
+        image_format: 'png',
+        jpeg_quality: 100
+    })
 
     Webcam.attach('#camera');
 }
+
 
 Webcam.on( 'live', function() {    
     setTimeout(function() {
@@ -45,17 +68,17 @@ Webcam.on( 'live', function() {
     }, 1000)
 } );
 
-// /http://manifestocrafters.mine.bz/upload
+// /http://manifestocrafters.mine.bz:8080/upload
 function take_snapshot() {
-    $check = $('.fa-check');
+    $check = $('.fa-camera');
     $spin = $('.fa-spin');
 
-
+   
     Webcam.snap( function(data_uri) {
         data = {'img': data_uri};
         data = JSON.stringify(data);
         $.ajax({
-            url: 'http://manifestocrafters.mine.bz:8080/upload',
+            url: 'http://192.168.100.31:5010/upload',
             method: 'POST',
             contentType: "application/json",
             dataType: "json",
@@ -84,8 +107,8 @@ function take_snapshot() {
                     `;
                 }
 
-                $('#result .modal-body').html(html);
-                $('#result').fadeIn();
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#result').fadeIn(0);
             },
             complete: function() {
                 $check.show();
