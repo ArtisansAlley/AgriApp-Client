@@ -79,7 +79,7 @@ function take_snapshot() {
         data = JSON.stringify(data);
         $.ajax({
             // url: 'http://192.168.100.31:5010/upload',
-            url: 'https://49.150.239.132:8080/upload',
+            url: 'http://manifestocrafters.mine.bz:8080/upload',
             method: 'POST',
             contentType: "application/json",
             dataType: "json",
