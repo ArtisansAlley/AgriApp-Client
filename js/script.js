@@ -30,7 +30,7 @@ var veggies = {
 
 function compute_aspect_ratio() {
     original_width = 1080;
-    original_height = 1080;
+    original_height = 1920;
     new_width = window.innerWidth;
     new_height = original_height / original_width * new_width;
 
@@ -42,7 +42,6 @@ function compute_aspect_ratio() {
 
 function set_up_cam() {
     res = compute_aspect_ratio();
-    console.log(res);
 
     Webcam.set('constraints', {
             video: true,
@@ -51,8 +50,6 @@ function set_up_cam() {
     Webcam.set({
         width: res.w,
         height: res.h,
-        dest_width: 1080,
-        dest_height: 1080,
         image_format: 'png',
         jpeg_quality: 100
     })
@@ -78,8 +75,8 @@ function take_snapshot() {
         data = {'img': data_uri};
         data = JSON.stringify(data);
         $.ajax({
-            // url: 'http://192.168.100.31:5010/upload',
-            url: 'http://manifestocrafters.mine.bz:8080/upload',
+            url: 'http://192.168.100.31:5010/upload',
+            // url: 'http://manifestocrafters.mine.bz:8080/upload',
             method: 'POST',
             contentType: "application/json",
             dataType: "json",
@@ -114,7 +111,27 @@ function take_snapshot() {
                 $('#content').html(html);
                 $("html, body").animate({ scrollTop: 0 }, "slow");
                 $('#result #preview').css({backgroundImage:'url(' + data_uri + ')'});
-                $('#result').fadeIn(0);
+                // $('#result').fadeIn(0);
+
+                var canvas = document.getElementById('myCanvas');
+                var context = canvas.getContext('2d');
+                var imageObj = new Image();
+
+                imageObj.onload = function() {
+                // draw cropped image
+                var sourceX = 360/2;
+                var sourceY = (640/2)-244;
+                var sourceWidth = 244;
+                var sourceHeight = 244;
+                var destWidth = sourceWidth;
+                var destHeight = sourceHeight;
+                var destX = canvas.width / 2 - destWidth / 2;
+                var destY = canvas.height / 2 - destHeight / 2;
+
+                context.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
+                };
+                imageObj.src = data_uri;
+
             },
             complete: function() {
                 $check.show();
@@ -123,6 +140,7 @@ function take_snapshot() {
         })
     });
 }   
+
 
 $('#result #back').click(function() {
     $('#result').fadeOut(0)
