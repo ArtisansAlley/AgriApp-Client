@@ -1,82 +1,334 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/fontawesome.min.css">
 	<link rel="stylesheet" href="css/solid.css">
-	<link rel="stylesheet" href="css/style.css">
-	<style>
-		#crop-area {
-			width: 244px;
-			height: 244px;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			border: 1px solid white;
-			transform: translate(-50%, -50%);
-		}
-	</style>
+    <style>
+        /* loading */
+        #loading .text{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: color-change 1s infinite !important;
+        }
+        
+        @keyframes color-change {
+            0% { color: #32de84; }
+            50% { color: white; }
+            100% { color: #32de84; }
+        }
+
+        #loading .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: rgba(0,0,0,0.7);
+        }
+
+        /* Camera contents */
+        #camera-wrapper {
+            position: relative;
+        }
+        #borders {
+            width: 244px;
+            height: 244px;
+
+            background:
+                linear-gradient(to right, white 4px, transparent 4px) 0 0,
+                linear-gradient(to right, white 4px, transparent 4px) 0 100%,
+                linear-gradient(to left, white 4px, transparent 4px) 100% 0,
+                linear-gradient(to left, white 4px, transparent 4px) 100% 100%,
+                linear-gradient(to bottom, white 4px, transparent 4px) 0 0,
+                linear-gradient(to bottom, white 4px, transparent 4px) 100% 0,
+                linear-gradient(to top, white 4px, transparent 4px) 0 100%,
+                linear-gradient(to top, white 4px, transparent 4px) 100% 100%;
+
+            background-repeat: no-repeat;
+            background-size: 20px 20px;
+            
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #borders .helper{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.7;
+        }
+
+        #camera video {
+            object-fit: fill;
+        }
+        #capture-wrapper {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom:0;
+            background-color: rgba(0,0,0,0.8);
+        }
+        #capture {
+            width: 18%;
+            padding-bottom: 18%;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 0;
+            border-radius: 300%;
+            font-size: 1.5em;
+            margin: auto;
+            display: block;
+
+            border: 2px solid rgba(0,0,0,0.8);
+            box-shadow: 0 0 0 3px white;
+            box-sizing: content-box;
+        }
+
+        .xy-center {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #welcome {
+            background-image: url('img/bg.jpg');
+            background-size: cover;
+            z-index: 200;
+        }
+        #logo {
+            width: 43%;
+            height: auto;
+        }
+
+        /* Result */
+        #result {
+            background-color: white;
+            background-position: center;
+            background-size: cover;
+            overflow: auto;
+        }
+        .preview-image {
+            width: 100%;
+            height: 50vh;
+            background-size: cover;
+            background-position: center;
+        }
+        .veggie-preview {
+            width: 100%;
+            padding-top: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-primary,
+        .badge-primary,
+        .btn-primary {
+            background-color: #32de84 !important;
+            border-color: #32de84;
+            color: white;
+        }
+    </style>
 </head>
-<body class="bg-dark">
-	
-	<div id="crop-area">
+<body>
+    <div id="app">
 
-	</div>
+        <!-- Welcome -->
+        <div class="page" id="welcome">
+           <div class="xy-center">
+                <img class="d-block mx-auto" id="logo" src="img/logo.png" alt="">
+                <div class="text-center mt-5 h5"><i class="fas fa-spin fa-spinner text-light"></i></div>
+           </div>
+        </div>
+        
+        <!-- Camera -->
+        <div id="camera-wrapper">
+            
+            <div id="camera"></div>
 
-	<!-- Welcome Page -->
-	<div id="welcome">
-		<div class="wrapper">
-			<img id="logo" src="img/logo.png" alt="" width="140">
-			<div class="loader">Loading...</div>
-			<p class="text-light text-center">
-			</p>
-		</div>
-	</div>
+            <div class="contents">
+                <div id="borders">
+                    <p class="text-light mb-0 text-center helper">Take a picture of the plant</p>
+                </div>
+                <div id="capture-wrapper" class="py-4">
+                    <button  class="btn btn-light" id="capture"></button>
+                </div>
+            </div>
+        </div>
 
-	<!-- Note -->
-	<div class="alert alert-dark d-none">
-		<p class="text-light mb-0">
-			<i class="fas fa-image"></i> Take a picture of the vegetable
-		</p>
-	</div>
-	
-	<!-- Camera -->
-	<div class="center-v">
-		<div class="mx-auto" id="camera"></div>
-	</div>
-	
-	<!-- Capture Button -->
-	<button class="btn btn-lg my-3 btn-primary ripple" type=button value="Predict" id="capture" onClick="take_snapshot()" style="display: none;">
-		<i class="fas fa-camera text-light"></i>
-		<i class="fas fa-spin fa-spinner text-light" style="display: none;"></i>
-	</button>
+        <!-- Loading -->
+        <div class="page" id="loading" style="display: none;">
+            <div class="overlay"></div>
+            <div class="text-center text">
+                <h1><i class="fas fa-seedling"></i></h1>
+                <h5>Detecting Plant</h5>
+            </div>
+        </div>
 
-	<!-- Result -->
-	<div id="result" style="display: none;">
-		<div class="container-fluid mt-3">
-			<div class="row col-12 my-2">
-				<i class="fas fa-long-arrow-alt-left h4" id="back"></i>
-			</div>
-			<div class="row">
-				<div class="col-10 mx-auto">
-					<div class="mt-3" id="content">
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        <!-- Result -->
+        <div class="page" id="result" style="display: none;">
+            <nav class="navbar navbar-expand navbar-dark bg-primary fixed-top">
+                <a class="navbar-brand" href="#">Identifications</a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link font-weight-bold mb-0" href="#" id="back"><i class="fas fa-times"></i></span></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="preview-image"></div>
+            <div class="list-group mb-3" id="top-three"></div>
+        </div>
 
-	<canvas id="myCanvas" width="244" height="244"></canvas>
-
-	<script
+    </div>
+    
+    <script
 	src="https://code.jquery.com/jquery-3.5.1.js"
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	crossorigin="anonymous">
 	</script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="js/webcam.js"></script>
-	<script src="js/script.js"></script>
+    <script>
+        function set_up_cam() {
+            res = {
+                width: window.innerWidth,
+                height: window.innerHeight
+            }
+            
+            Webcam.set('constraints', {
+                    video: true,
+                    facingMode: "environment"
+            });
+
+            Webcam.set({
+                width: res.width,
+                height: res.height,
+                image_format: 'png',
+                jpeg_quality: 100
+            })
+
+            Webcam.attach('#camera');
+        }
+
+        $(document).ready(function() {
+            set_up_cam();
+            $camera_contents = $('#camera-wrapper .contents');
+            $loading = $('#loading');
+            $result = $('#result');
+            $topThree = $('#top-three');
+
+            var veggies = {
+                'cabbage': {
+                    'img': 'img/veggies/cabbage.jpeg',
+                    'scientific_name': 'Brassica oleracea var. capitata'
+                },
+                'lettuce': {
+                    'img': 'img/veggies/lettuce.jpeg',
+                    'scientific_name': 'Lactuca sativa'
+                },
+                'pechay': {
+                    'img': 'img/veggies/petchay.jpeg',
+                    'scientific_name': 'Brassica rapa'
+                },
+                'malunggay': {
+                    'img': 'img/veggies/lettuce.jpeg',
+                    'scientific_name': 'Moringa oleifer'
+                },
+                'parsley': {
+                    'img': 'img/veggies/parlsey.jpeg',
+                    'scientific_name': 'Petroselinum crispum'
+                },
+                'spinach': {
+                    'img': 'img/veggies/spinach.jpeg',
+                    'scientific_name': 'Spinacia oleracea'
+                }
+            }
+
+            Webcam.on( 'live', function() {    
+                setTimeout(function() {
+                    $('#welcome').fadeOut();
+                    $('#camera-wrapper').show();
+                }, 1000)
+            });
+
+            $('#back').click(function() {
+                $loading.hide();
+                $result.fadeOut();
+                $camera_contents.show();
+                Webcam.unfreeze();
+            })
+
+            $('#capture').click(function() {
+                $check = $('.fa-camera');
+                $spin = $('.fa-spin');
+                Webcam.snap( function(data_uri) {
+                    Webcam.freeze();
+                    $camera_contents.hide(100);
+
+                    data = {'img': data_uri};
+                    data = JSON.stringify(data);
+                    $.ajax({
+                        url: 'http://192.168.100.31:5010/upload',
+                        // url: 'http://manifestocrafters.mine.bz:8080/upload',
+                        method: 'POST',
+                        contentType: "application/json",
+                        dataType: "json",
+                        data: data,
+                        beforeSend: function() {
+                            $loading.fadeIn(100);
+                        },
+                        error: function(res) {
+                        },
+                        success:function(res) {
+                            topThree = res.message;
+                            html = '';
+                            console.log(topThree);
+                            for (i = 0; i < topThree.length; i++) {
+                                veg = topThree[i];
+                                console.log(veg);
+                                html +=  `
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="veggie-preview" style="background-image: url('${veggies[veg].img}');"></div>
+                                        </div>
+                                        <div class="col-8">
+                                            <h5>${veg} <span class="badge badge-primary">${i + 1}</span></h5>
+                                            <em class="text-secondary">Scientific Name : ${veggies[veg].scientific_name}</em>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                            }
+
+                            
+                            $result.find('.preview-image').css('background-image', 'url(' + data_uri + ')')
+                            $result.fadeIn(100);
+                            $topThree.html(html);
+                        },
+                        complete: function() {
+                            $loading.fadeOut(100);
+                        }
+                    });
+                });
+            });
+        })
+
+    </script>
 </body>
 </html>
