@@ -196,6 +196,7 @@
 
     </div>
     
+    <script src="cordova.js"></script>
     <script
 	src="https://code.jquery.com/jquery-3.5.1.js"
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
@@ -225,8 +226,17 @@
             Webcam.attach('#camera');
         }
 
-        $(document).ready(function() {
-            set_up_cam();
+        document.addEventListener('deviceready', () => {
+            var permissions = cordova.plugins.permissions;
+            permissions.requestPermission(permissions.CAMERA, success, error);
+            function error() {
+                alert('Camera permission is not turned on');
+            }
+            
+            function success( status ) {
+                set_up_cam();
+                if( !status.hasPermission ) error();
+            }
             $camera_contents = $('#camera-wrapper .contents');
             $loading = $('#loading');
             $result = $('#result');
@@ -271,7 +281,7 @@
                 $result.fadeOut();
                 $camera_contents.show();
                 Webcam.unfreeze();
-            })
+            });
 
             $('#capture').click(function() {
                 $check = $('.fa-camera');
@@ -283,8 +293,8 @@
                     data = {'img': data_uri};
                     data = JSON.stringify(data);
                     $.ajax({
-                        url: 'http://192.168.100.31:5010/upload',
-                        // url: 'http://manifestocrafters.mine.bz:8080/upload',
+                        // url: 'http://192.168.100.31:5010/upload',
+                        url: 'https://agriapp.ga:80/upload',
                         method: 'POST',
                         contentType: "application/json",
                         dataType: "json",
