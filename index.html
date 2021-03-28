@@ -225,7 +225,7 @@
             Webcam.attach('#camera');
         }
 
-        document.addEventListener('deviceready', () => {
+        $(document).ready(function(){
 	    set_up_cam();
             $camera_contents = $('#camera-wrapper .contents');
             $loading = $('#loading');
