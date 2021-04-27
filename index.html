@@ -103,7 +103,6 @@
             right: 0;
             bottom: 0;
         }
-
         #welcome {
             background-image: url('img/bg.jpg');
             background-size: cover;
@@ -133,13 +132,14 @@
             background-size: cover;
             background-position: center;
         }
-
+        .swiper-slide {
+            overflow: auto;
+        }
         .bg-primary,
         .badge-primary,
         .btn-primary {
             background-color: #32de84 !important;
             border-color: #32de84;
-            color: white;
         }
     </style>
 </head>
@@ -161,7 +161,7 @@
 
             <div class="contents">
                 <div id="borders">
-                    <p class="text-light mb-0 text-center helper">Take a picture of the plant</p>
+                    <p class="text-light mb-0 text-center helper">Take a picture of the spinach</p>
                 </div>
                 <div id="capture-wrapper" class="py-4">
                     <button  class="btn btn-light" id="capture"></button>
@@ -178,20 +178,34 @@
             </div>
         </div>
 
-        <!-- Result -->
-        <div class="page" id="result" style="display: none;">
-            <nav class="navbar navbar-expand navbar-dark bg-primary fixed-top">
-                <a class="navbar-brand" href="#">Identifications</a>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link font-weight-bold mb-0" href="#" id="back"><i class="fas fa-times"></i></span></a>
-                        </li>
-                    </ul>
+         <!-- Result -->
+         <div class="page bg-light" id="result" style="display: none;">
+            <div class="container my-5">
+                <h1 class="mb-5 font-weight-light">Detected 3 Possible Diseases</h1>
+                <div class="card box-shadow">
+                    <div class="preview-image" style="background-image: url('img/diseases/Downy\ Mildew.png');"></div>
+                    <div class="card-body">
+                        <h1>1. Downy mildew</h1>
+                        <p>Downy mildew is a fungal disease caused by Peronospora parasitica. It causes white mold and faint yellow spots on the dorsal and ventral sides of the leaves respectively.</p>
+                        <!-- Prevention -->
+                        <div class="mt-5">
+                            <h4>Prevention</h4>
+                            <p>
+                                The fungus thrives in cold and wet conditions, so you can prevent it by avoiding these conditions in your garden. Some practices that can cause cold and wet conditions are excess watering and over-head irrigation.
+                            </p>
+                        </div>
+
+                        <div class="mt-5">
+                            <h4>Control</h4>
+                            <p>
+                                You can control downy mildew by uprooting the infected crop and burning it, and you can treat it by using the fosetyl-al fungicide.
+                            </p>
+                        </div>
+
+                    </div>
                 </div>
-            </nav>
-            <div class="preview-image"></div>
-            <div class="list-group mb-3" id="top-three"></div>
+
+            </div>
         </div>
 
     </div>
@@ -203,132 +217,5 @@
 	</script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="js/webcam.js"></script>
-    <script>
-        function set_up_cam() {
-            res = {
-                width: window.innerWidth,
-                height: window.innerHeight
-            }
-            
-            Webcam.set('constraints', {
-                    video: true,
-                    facingMode: "environment"
-            });
-
-            Webcam.set({
-                width: res.width,
-                height: res.height,
-                image_format: 'png',
-                jpeg_quality: 100
-            })
-
-            Webcam.attach('#camera');
-        }
-
-        $(document).ready(function() {
-            set_up_cam();
-            $camera_contents = $('#camera-wrapper .contents');
-            $loading = $('#loading');
-            $result = $('#result');
-            $topThree = $('#top-three');
-
-            var veggies = {
-                'cabbage': {
-                    'img': 'img/veggies/cabbage.jpeg',
-                    'scientific_name': 'Brassica oleracea var. capitata'
-                },
-                'lettuce': {
-                    'img': 'img/veggies/lettuce.jpeg',
-                    'scientific_name': 'Lactuca sativa'
-                },
-                'pechay': {
-                    'img': 'img/veggies/petchay.jpeg',
-                    'scientific_name': 'Brassica rapa'
-                },
-                'malunggay': {
-                    'img': 'img/veggies/lettuce.jpeg',
-                    'scientific_name': 'Moringa oleifer'
-                },
-                'parsley': {
-                    'img': 'img/veggies/parlsey.jpeg',
-                    'scientific_name': 'Petroselinum crispum'
-                },
-                'spinach': {
-                    'img': 'img/veggies/spinach.jpeg',
-                    'scientific_name': 'Spinacia oleracea'
-                }
-            }
-
-            Webcam.on( 'live', function() {    
-                setTimeout(function() {
-                    $('#welcome').fadeOut();
-                    $('#camera-wrapper').show();
-                }, 1000)
-            });
-
-            $('#back').click(function() {
-                $loading.hide();
-                $result.fadeOut();
-                $camera_contents.show();
-                Webcam.unfreeze();
-            })
-
-            $('#capture').click(function() {
-                $check = $('.fa-camera');
-                $spin = $('.fa-spin');
-                Webcam.snap( function(data_uri) {
-                    Webcam.freeze();
-                    $camera_contents.hide(100);
-
-                    data = {'img': data_uri};
-                    data = JSON.stringify(data);
-                    $.ajax({
-                        url: 'http://192.168.100.31:5010/upload',
-                        // url: 'http://manifestocrafters.mine.bz:8080/upload',
-                        method: 'POST',
-                        contentType: "application/json",
-                        dataType: "json",
-                        data: data,
-                        beforeSend: function() {
-                            $loading.fadeIn(100);
-                        },
-                        error: function(res) {
-                        },
-                        success:function(res) {
-                            topThree = res.message;
-                            html = '';
-                            console.log(topThree);
-                            for (i = 0; i < topThree.length; i++) {
-                                veg = topThree[i];
-                                console.log(veg);
-                                html +=  `
-                                <div class="list-group-item">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <div class="veggie-preview" style="background-image: url('${veggies[veg].img}');"></div>
-                                        </div>
-                                        <div class="col-8">
-                                            <h5>${veg} <span class="badge badge-primary">${i + 1}</span></h5>
-                                            <em class="text-secondary">Scientific Name : ${veggies[veg].scientific_name}</em>
-                                        </div>
-                                    </div>
-                                </div>
-                                `;
-                            }
-
-                            
-                            $result.find('.preview-image').css('background-image', 'url(' + data_uri + ')')
-                            $result.fadeIn(100);
-                            $topThree.html(html);
-                        },
-                        complete: function() {
-                            $loading.fadeOut(100);
-                        }
-                    });
-                });
-            });
-        })
-
-    </script>
 </body>
 </html>
