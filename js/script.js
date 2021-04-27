@@ -1,55 +1,86 @@
-var width = $(window).width();
-var height =  $(window).height();
-
-var veggies = {
-    'cabbage': {
-        'img': 'img/veggies/cabbage.jpeg',
-        'scientific_name': 'Brassica oleracea var. capitata'
-    },
-    'lettuce': {
-        'img': 'img/veggies/lettuce.jpeg',
-        'scientific_name': 'Lactuca sativa'
-    },
-    'pechay': {
-        'img': 'img/veggies/petchay.jpeg',
-        'scientific_name': 'Brassica rapa'
-    },
-    'malunggay': {
-        'img': 'img/veggies/lettuce.jpeg',
-        'scientific_name': 'Moringa oleifer'
-    },
-    'parsley': {
-        'img': 'img/veggies/parlsey.jpeg',
-        'scientific_name': 'Petroselinum crispum'
-    },
-    'spinach': {
-        'img': 'img/veggies/spinach.jpeg',
-        'scientific_name': 'Spinacia oleracea'
+function displayTopThree(topThree, type) {
+    html = '';
+    var veggies = {
+        'cabbage': {
+            'img': 'img/veggies/cabbage.jpeg',
+            'scientific_name': 'Brassica oleracea var. capitata'
+        },
+        'lettuce': {
+            'img': 'img/veggies/lettuce.jpeg',
+            'scientific_name': 'Lactuca sativa'
+        },
+        'pechay': {
+            'img': 'img/veggies/petchay.jpeg',
+            'scientific_name': 'Brassica rapa'
+        },
+        'malunggay': {
+            'img': 'img/veggies/malunggay.jpeg',
+            'scientific_name': 'Moringa oleifer'
+        },
+        'parsley': {
+            'img': 'img/veggies/parlsey.jpeg',
+            'scientific_name': 'Petroselinum crispum'
+        },
+        'spinach': {
+            'img': 'img/veggies/spinach.jpeg',
+            'scientific_name': 'Spinacia oleracea'
+        }
     }
+
+    var diseases = {
+        'Alternaria Leaf Spot': {
+            'img': 'img/diseases/Alternaria Leaf Spot.png',
+            'description': 'Downy mildew is a fungal disease caused by Peronospora parasitica. It causes white mold and faint yellow spots on the dorsal and ventral sides of the leaves respectively.',
+            'prevention': 'Caused by fungus Colletotrichum higginisianum, Anthracnose affects leaves & stems of vegetables like turnips, and causes small, gray, or black spots on these parts.'
+        },
+        'Anthracnose': {
+            'img': 'img/diseases/Anthracnose.jpg',
+            'description': 'Alternaria leaf spot is caused by fungus Alternaria brassicae. The leaves of the infected crop (especially kales) have black or brown circular spots. With time, the spots enlarge and concentric rings appear on them.'
+        },
+        'Downy Mildew': {
+            'img': 'img/diseases/Downy Mildew.png',
+            'description': 'Caused by fungus Colletotrichum higginisianum, Anthracnose affects leaves & stems of vegetables like turnips, and causes small, gray, or black spots on these parts.'
+        }
+    }
+
+    var data = {
+        'veggies': veggies,
+        'diseases': diseases
+    }
+
+    for (i = 0; i < topThree.length; i++) {
+        veg = topThree[i];
+        
+        html +=  `
+        <div class="list-group-item ${veg}">
+            <div class="row">
+                <div class="col-4">
+                    <div class="veggie-preview" style="background-image: url('${data[type][veg].img}');"></div>
+                </div>
+                <div class="col-8">
+                    <h5>${veg} <span class="badge badge-primary">${i + 1}</span></h5>
+                    <em class="text-secondary">Scientific Name : ${data[type][veg].scientific_name}</em>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+    return html;
 }
-
-function compute_aspect_ratio() {
-    original_width = 1080;
-    original_height = 1920;
-    new_width = window.innerWidth;
-    new_height = original_height / original_width * new_width;
-
-    return {
-        w:new_width,
-        h:new_height
-    };
-}
-
 function set_up_cam() {
-    res = compute_aspect_ratio();
-
+    res = {
+        width: window.innerWidth,
+        height: window.innerHeight
+    }
+    
     Webcam.set('constraints', {
             video: true,
             facingMode: "environment"
     });
+
     Webcam.set({
-        width: res.w,
-        height: res.h,
+        width: res.width,
+        height: res.height,
         image_format: 'png',
         jpeg_quality: 100
     })
@@ -57,108 +88,92 @@ function set_up_cam() {
     Webcam.attach('#camera');
 }
 
-
-Webcam.on( 'live', function() {    
-    setTimeout(function() {
-        $('#welcome').fadeOut();
-        $('#capture').show();
-    }, 1000)
-} );
-
-// /http://manifestocrafters.mine.bz:8080/upload
-function take_snapshot() {
-    $check = $('.fa-camera');
-    $spin = $('.fa-spin');
-
-   
-    Webcam.snap( function(data_uri) {
-        data = {'img': data_uri};
-        data = JSON.stringify(data);
-        $.ajax({
-            // url: 'http://192.168.100.31:5010/upload',
-            url: 'https://49.150.239.132:8080/upload',
-            method: 'POST',
-            contentType: "application/json",
-            dataType: "json",
-            data: data,
-            beforeSend: function() {
-                $check.hide();
-                $spin.show();
-            },
-            error: function(res) {
-                alert(JSON.stringify(res));
-            },
-            success:function(res) {
-                topThree = res.message;
-                html = '';
-
-                for (i = 0; i < topThree.length; i++) {
-                    veg = topThree[i];
-                    html +=  `
-                    <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="top p-3">
-                            <h5 class="font-weight-bold text-light mb-0">${i}</h5>
-                        </div>
-                        <div class="veggie-image"></div>
-                        <h5 class="font-weight-bold">${topThree[i]}</h5>
-                        <p><em>Brassica oleracea var. capitata</em></p>
-                    </div>
-                </div>	
-                    `;
-                }
-
-                $('#content').html(html);
-                $("html, body").animate({ scrollTop: 0 }, "slow");
-                $('#result #preview').css({backgroundImage:'url(' + data_uri + ')'});
-                // $('#result').fadeIn(0);
-
-                var canvas = document.getElementById('myCanvas');
-                var context = canvas.getContext('2d');
-                var imageObj = new Image();
-
-                imageObj.onload = function() {
-                // draw cropped image
-                var sourceX = 360/2;
-                var sourceY = (640/2)-244;
-                var sourceWidth = 244;
-                var sourceHeight = 244;
-                var destWidth = sourceWidth;
-                var destHeight = sourceHeight;
-                var destX = canvas.width / 2 - destWidth / 2;
-                var destY = canvas.height / 2 - destHeight / 2;
-
-                context.drawImage(imageObj, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
-                };
-                imageObj.src = data_uri;
-
-            },
-            complete: function() {
-                $check.show();
-                $spin.hide();
-            }
-        })
-    });
-}   
-
-
-$('#result #back').click(function() {
-    $('#result').fadeOut(0)
-})
-
 $(document).ready(function() {
     set_up_cam();
-})
 
-document.addEventListener('deviceready', () => {
-    var permissions = cordova.plugins.permissions;
-    permissions.requestPermission(permissions.CAMERA, success, error);
-    function error() {
-        alert('Camera permission is not turned on');
-      }
-       
-      function success( status ) {
-        set_up_cam();
-        if( !status.hasPermission ) error();
-      }
-});
+    const swiper = new Swiper('.swiper-container', {
+        // Optional parameters
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+        },
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        // And if we need scrollbar
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+    });
+
+    $camera_contents = $('#camera-wrapper .contents');
+    $loading = $('#loading');
+    $result = $('#result');
+    $topThree = $('#top-three');
+
+    server_resp = undefined;
+
+    Webcam.on( 'live', function() {    
+        setTimeout(function() {
+            $('#welcome').fadeOut();
+            $('#camera-wrapper').show();
+        }, 1000)
+    });
+
+    $('#back').click(function() {
+        $loading.hide();
+        $result.fadeOut();
+        $camera_contents.show();
+        Webcam.unfreeze();
+    })
+
+    $('#capture').click(function() {
+        $check = $('.fa-camera');
+        $spin = $('.fa-spin');
+        Webcam.snap( function(data_uri) {
+            Webcam.freeze();
+            $camera_contents.hide(100);
+
+            data = {'img': data_uri};
+            data = JSON.stringify(data);
+            $.ajax({
+                url: 'http://192.168.100.31:5010/upload',
+                // url: 'http://manifestocrafters.mine.bz:8080/upload',
+                method: 'POST',
+                contentType: "application/json",
+                dataType: "json",
+                data: data,
+                beforeSend: function() {
+                    $loading.fadeIn(100);
+                },
+                error: function(res) {
+                },
+                success:function(res) {
+                    alert(JSON.stringify(res));
+                    server_resp = res.message;
+                    topThree = server_resp.veggies_predictions;
+                    html = '';
+                    html = displayTopThree(topThree, 'veggies');
+                    
+                    $result.find('.preview-image').css('background-image', 'url(' + data_uri + ')')
+                    $result.find('.title').text('Top Three Identifications');
+                    $result.fadeIn(100);
+                    $topThree.html(html);
+                },
+                complete: function() {
+                    $loading.fadeOut(100);
+                }
+            });
+        });
+
+        $result.on('click', '.spinach', function() {
+            html = displayTopThree(server_resp.diseases.topThree, 'diseases');
+            $result.find('.title').text('Top Three Diseases');
+            $topThree.html(html);
+        });
+    });
+})
