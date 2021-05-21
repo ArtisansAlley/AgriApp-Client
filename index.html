@@ -1,221 +1,243 @@
 <html>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<link rel="stylesheet" href="css/fontawesome.min.css">
-	<link rel="stylesheet" href="css/solid.css">
-    <style>
-        /* loading */
-        #loading .text{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: color-change 1s infinite !important;
-        }
-        
-        @keyframes color-change {
-            0% { color: #32de84; }
-            50% { color: white; }
-            100% { color: #32de84; }
-        }
+    <head>
+        <title>AgriApp</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" integrity="sha512-OdEXQYCOldjqUEsuMKsZRj93Ht23QRlhIb8E/X0sbwZhme8eUw6g8q7AdxGJKakcBbv7+/PX0Gc2btf7Ru8cZA==" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" integrity="sha512-jQqzj2vHVxA/yCojT8pVZjKGOe9UmoYvnOuM/2sQ110vxiajBU+4WkyRs1ODMmd4AfntwUEV4J+VfM6DkfjLRg==" crossorigin="anonymous" />
+        <style>
+            body {
+                font-size: 1.3rem;
+            }
+            * {
+                font-family:'Manrope', sans-serif;
+            }
 
-        #loading .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background-color: rgba(0,0,0,0.7);
-        }
+            .text-primary {
+                color: #8dc63f !important;
+            }
+            .btn-primary {
+                background-color: #8dc63f;
+                border-color: #8dc63f;
+            }
+            .btn-primary:hover {
+                color: #fff;
+                background-color: #84b83b;
+                border-color: #84b83b;
+            }
+            .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
+                box-shadow: 0 0 0 0.2rem rgb(141 198 63 / 50%) ;
+            }
 
-        /* Camera contents */
-        #camera-wrapper {
-            position: relative;
-        }
-        #borders {
-            width: 244px;
-            height: 244px;
+            .btn-primary.focus, .btn-primary:focus {
+                box-shadow: 0 0 0 0.2rem rgb(141 198 63 / 50%) ;
+            }
+            .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+                color: #fff;
+                background-color: #8dc63f !important;
+                border-color: #8dc63f !important;
+            }
 
-            background:
-                linear-gradient(to right, white 4px, transparent 4px) 0 0,
-                linear-gradient(to right, white 4px, transparent 4px) 0 100%,
-                linear-gradient(to left, white 4px, transparent 4px) 100% 0,
-                linear-gradient(to left, white 4px, transparent 4px) 100% 100%,
-                linear-gradient(to bottom, white 4px, transparent 4px) 0 0,
-                linear-gradient(to bottom, white 4px, transparent 4px) 100% 0,
-                linear-gradient(to top, white 4px, transparent 4px) 0 100%,
-                linear-gradient(to top, white 4px, transparent 4px) 100% 100%;
+            .card {
+                border: none !important;
+                border-radius: 2rem;
+                box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
+            }
+            .card-img {
+                width: 100%;
+                height: 200px;
+            }
 
-            background-repeat: no-repeat;
-            background-size: 20px 20px;
-            
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-weight: 800;
+            }
 
-        #borders .helper{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.7;
-        }
+            /* Navbar */
+            #navbar {
+                background-color: white !important;
+                box-shadow: 0px 1px 10px rgba(0,0,0,0.2);
+            }
 
-        #camera video {
-            object-fit: fill;
-        }
-        #capture-wrapper {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom:0;
-            background-color: rgba(0,0,0,0.8);
-        }
-        #capture {
-            width: 18%;
-            padding-bottom: 18%;
-            padding-left: 0;
-            padding-right: 0;
-            padding-top: 0;
-            border-radius: 300%;
-            font-size: 1.5em;
-            margin: auto;
-            display: block;
+            /* Splash Sreen */
+            #splash-screen {
+                background-image: url('img/splashscreen-bg.jpg');
+                background-size: cover;
+                background-position: center;
+                overflow: hidden;
+            }
+            #logo {
+                
+            }
 
-            border: 2px solid rgba(0,0,0,0.8);
-            box-shadow: 0 0 0 3px white;
-            box-sizing: content-box;
-        }
+            /* Camera Contents */
+            #borders {
+                width: 244px;
+                height: 244px;
 
-        .xy-center {
-            position: relative;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-        #welcome {
-            background-image: url('img/bg.jpg');
-            background-size: cover;
-            z-index: 200;
-        }
-        #logo {
-            width: 43%;
-            height: auto;
-        }
+                background:
+                    linear-gradient(to right, white 2px, transparent 2px) 0 0,
+                    linear-gradient(to right, white 2px, transparent 2px) 0 100%,
+                    linear-gradient(to left, white 2px, transparent 2px) 100% 0,
+                    linear-gradient(to left, white 2px, transparent 2px) 100% 100%,
+                    linear-gradient(to bottom, white 2px, transparent 2px) 0 0,
+                    linear-gradient(to bottom, white 2px, transparent 2px) 100% 0,
+                    linear-gradient(to top, white 2px, transparent 2px) 0 100%,
+                    linear-gradient(to top, white 2px, transparent 2px) 100% 100%;
 
-        /* Result */
-        #result {
-            background-color: white;
-            background-position: center;
-            background-size: cover;
-            overflow: auto;
-        }
-        .preview-image {
-            width: 100%;
-            height: 50vh;
-            background-size: cover;
-            background-position: center;
-        }
-        .veggie-preview {
-            width: 100%;
-            padding-top: 100%;
-            background-size: cover;
-            background-position: center;
-        }
-        .swiper-slide {
-            overflow: auto;
-        }
-        .bg-primary,
-        .badge-primary,
-        .btn-primary {
-            background-color: #32de84 !important;
-            border-color: #32de84;
-        }
-    </style>
-</head>
-<body>
-    <div id="app">
+                background-repeat: no-repeat;
+                background-size: 20px 20px;
+                
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            #borders .helper {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                opacity: 0.7;
+            }
+            #camera video {
+                object-fit: fill;
+            }
+            #capture-wrapper {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom:0;
+                background-color: rgba(0,0,0,0.2);
+            }
+            #capture {
+                width: 18%;
+                padding-bottom: 18%;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top: 0;
+                border-radius: 300%;
+                font-size: 1.5em;
+                margin: auto;
+                display: block;
 
-        <!-- Welcome -->
-        <div class="page" id="welcome">
-           <div class="xy-center">
-                <img class="d-block mx-auto" id="logo" src="img/logo.png" alt="">
-                <div class="text-center mt-5 h5"><i class="fas fa-spin fa-spinner text-light"></i></div>
-           </div>
-        </div>
-        
-        <!-- Camera -->
-        <div id="camera-wrapper">
-            
-            <div id="camera"></div>
+                border: 5px solid rgba(0,0,0,0.1);
+                box-shadow: 0 0 0 3px white;
+                box-sizing: content-box;
+            }
 
-            <div class="contents">
-                <div id="borders">
-                    <p class="text-light mb-0 text-center helper">Take a picture of the spinach</p>
-                </div>
-                <div id="capture-wrapper" class="py-4">
-                    <button  class="btn btn-light" id="capture"></button>
-                </div>
+            /* Result Content */
+            #result .preview-screen {
+                width: 100%;
+                height: 50%;
+                background-size: cover;
+                background-position: center;
+                position: relative;
+            }
+            #result .description {
+                margin-top: -50px;
+                          
+            }
+        </style>
+    </head>
+    <body class="bg-light">
+
+        <nav id="navbar" class="navbar navbar-expand navbar-light bg-light fixed-top p-4" style="display: none;">
+            <a class="navbar-brand" href="#">
+                <img class="img-fluid" src="img/logo-alt.png" alt="" width="170">
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a id="back-slide" class="nav-link" href="#"><i class="text-primary fas fa-chevron-left"></i></a>
+                    </li>
+                </ul>
             </div>
-        </div>
+        </nav>
 
-        <!-- Loading -->
-        <div class="page" id="loading" style="display: none;">
-            <div class="overlay"></div>
-            <div class="text-center text">
-                <h1><i class="fas fa-seedling"></i></h1>
-                <h5>Detecting Plant</h5>
-            </div>
-        </div>
 
-         <!-- Result -->
-         <div class="page bg-light" id="result" style="display: none;">
-            <div class="container my-5">
-                <h1 class="mb-5 font-weight-light">Detected 3 Possible Diseases</h1>
-                <div class="card box-shadow">
-                    <div class="preview-image" style="background-image: url('img/diseases/Downy\ Mildew.png');"></div>
-                    <div class="card-body">
-                        <h1>1. Downy mildew</h1>
-                        <p>Downy mildew is a fungal disease caused by Peronospora parasitica. It causes white mold and faint yellow spots on the dorsal and ventral sides of the leaves respectively.</p>
-                        <!-- Prevention -->
-                        <div class="mt-5">
-                            <h4>Prevention</h4>
-                            <p>
-                                The fungus thrives in cold and wet conditions, so you can prevent it by avoiding these conditions in your garden. Some practices that can cause cold and wet conditions are excess watering and over-head irrigation.
-                            </p>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- Splash Sreen -->
+                <div id="splash-screen" class="swiper-slide">
+                    <div class="row align-items-center h-100 d-flex">
+                        <div class="col-6 col-md-3 mx-auto">
+                            <img id="logo" class="img-fluid animate__animated animate__backInDown" src="img/logo.png" alt="">
                         </div>
+                    </div>
+                </div>
 
-                        <div class="mt-5">
-                            <h4>Control</h4>
-                            <p>
-                                You can control downy mildew by uprooting the infected crop and burning it, and you can treat it by using the fosetyl-al fungicide.
-                            </p>
+                <!-- Camera -->
+                <div id="camera-slide" class="swiper-slide">
+                    <div id="camera"></div>
+
+                    <div class="contents">
+                        <div id="borders">
+                            <p class="text-light mb-0 text-center helper"></p>
                         </div>
+                        <div id="capture-wrapper" class="py-4">
+                            <button  class="btn btn-light" id="capture"></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Result Slide -->
+                <div id="result" class="swiper-slide" style="overflow: auto;">
+                    <div class="preview-screen"></div>
+                    <div class="container my-4">
+                        <div class="card description animate__animated">
+                            <div class="card-body text-center">
+                                <div class="mb-4">
+                                    <p class="lead mb-0">We have detected</p>
+                                    <h3 class="text-primary disease-name"></h3>
+                                    <p><em><span class="confidence"></span>% Confident</em></p>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <p class="description-text"></p>
+                                </div>
+                                <button class="btn btn-lg btn-primary" id="learn-more">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- More Info Slide -->
+                <div id="more-info" class="swiper-slide" style="overflow: auto;">
+                    <div class="container py-4" style="margin-top:104px;">
+                        <div class="card prevention animate__animated mb-4">
+                            <!-- <div class="card-img"></div> -->
+                            <div class="card-body">
+                                <h3 class="text-primary mb-4">Prevention</h3>
+                                <p class="prevention-text"></p>
+                            </div>
+                        </div>
+                        <div class="card control animate__animated">
+                            <!-- <div class="card-img"></div> -->
+                            <div class="card-body">
+                                <h3 class="text-primary mb-4">Control</h3>
+                                <p class="control-text"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
 
-    </div>
-
-    <script
-	src="https://code.jquery.com/jquery-3.5.1.js"
-	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-	crossorigin="anonymous">
-	</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="js/webcam.js"></script>
-</body>
+        <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="js/webcam.js"></script>
+        <script src="js/script.js"></script>
+    </body>
 </html>
